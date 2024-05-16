@@ -1,8 +1,19 @@
 package com.crudapi.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
-public class StudentService {
+import com.crudapi.entity.Student;
+
+public interface StudentService {
+
+	Student addStudent(Student student);
+
+	List<Student> findAll();
+
+	Student findByEmail(String email);
+
+	String deleteByEmail(String email);
+
+	Student updateStudent(Student student, String email);
 
 }
