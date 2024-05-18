@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import com.crudapi.entity.Student;
 import com.crudapi.repository.StudentRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
 	private final StudentRepository studentRepository;
 
-	//Constructor Injection, and in this @Autowired is not necessary.
+	// Constructor Injection, and in this @Autowired is not necessary.
 	public StudentServiceImpl(StudentRepository studentRepository) {
 		this.studentRepository = studentRepository;
 
@@ -34,20 +36,35 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public String deleteByEmail(String email) {
-		this.studentRepository.deleteByEmail(email);
-		return "Student " + email + " deleted successfully";
-
+	@Transactional
+	public boolean deleteByEmail(String email) {
+		Student student = null;
+		try {
+			student = this.studentRepository.findByEmail(email).get();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (student != null) {
+			this.studentRepository.deleteByEmail(email);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public Student updateStudent(Student student, String email) {
-		Student existingStudent = this.studentRepository.findByEmail(email).get();
-		existingStudent.setFirstName(student.getFirstName());
-		existingStudent.setLastName(student.getLastName());
-		existingStudent.setDateOfBirth(student.getDateOfBirth());
+		Student existingStudent = null;
+		try {
+			existingStudent = this.studentRepository.findByEmail(email).get();
+			existingStudent.setFirstName(student.getFirstName());
+			existingStudent.setLastName(student.getLastName());
+			existingStudent.setDateOfBirth(student.getDateOfBirth());
+			this.studentRepository.save(existingStudent);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		return this.studentRepository.save(existingStudent);
+		return existingStudent;
 	}
 
 }
