@@ -12,6 +12,7 @@ public class StudentServiceImpl implements StudentService {
 
 	private final StudentRepository studentRepository;
 
+	//Constructor Injection, and in this @Autowired is not necessary.
 	public StudentServiceImpl(StudentRepository studentRepository) {
 		this.studentRepository = studentRepository;
 
@@ -34,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public String deleteByEmail(String email) {
-		this.studentRepository.ddeleteByEmail(email);
+		this.studentRepository.deleteByEmail(email);
 		return "Student " + email + " deleted successfully";
 
 	}
