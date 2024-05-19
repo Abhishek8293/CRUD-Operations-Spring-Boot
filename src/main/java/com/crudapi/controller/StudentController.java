@@ -28,52 +28,35 @@ public class StudentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+	public ResponseEntity<Object> addStudent(@RequestBody Student student) {
 
-		Student savedStudent = this.studentServiceImpl.addStudent(student);
-		if (savedStudent == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<Student>(savedStudent, HttpStatus.CREATED);
+		Student savedStudent = studentServiceImpl.addStudent(student);
+		return ResponseHandler.responseBuilder("Student is added successfully", HttpStatus.CREATED, savedStudent);
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Student>> getAllStudents() {
+	public ResponseEntity<Object> getAllStudents() {
 
-		List<Student> studentList = this.studentServiceImpl.findAll();
-		if (studentList.size() == 0) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<>(studentList, HttpStatus.OK);
+		List<Student> studentList = studentServiceImpl.findAll();
+		return ResponseHandler.responseBuilder("List of students", HttpStatus.OK, studentList);
 	}
 
 	@GetMapping("/{email}")
 	public ResponseEntity<Object> getStudent(@PathVariable String email) {
-		Student student = this.studentServiceImpl.findByEmail(email);
-		if (student == null) {
-			return ResponseHandler.responseBuilder("Student with given id is not present", HttpStatus.NOT_FOUND, null);
-		}
+		Student student = studentServiceImpl.findByEmail(email);
 		return ResponseHandler.responseBuilder("Requested Student Details ", HttpStatus.OK, student);
 	}
 
 	@DeleteMapping("/{email}")
-	public ResponseEntity<?> deleteStudent(@PathVariable String email) {
-		boolean isDeleted = this.studentServiceImpl.deleteByEmail(email);
-		if (isDeleted) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+	public ResponseEntity<Object> deleteStudent(@PathVariable String email) {
+		studentServiceImpl.deleteByEmail(email);
+		return ResponseHandler.responseBuilder("Requested student is deleted successfully", HttpStatus.OK, null);
 	}
 
 	@PutMapping("/{email}")
-	public ResponseEntity<?> updateStudent(@RequestBody Student student, @PathVariable String email) {
-		Student updatedStudent = this.studentServiceImpl.updateStudent(student, email);
-		if (updatedStudent != null) {
-			return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
-		}
-
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<Object> updateStudent(@RequestBody Student student, @PathVariable String email) {
+		Student updatedStudent = studentServiceImpl.updateStudent(student, email);
+		return ResponseHandler.responseBuilder("Requested student is updated successfully", HttpStatus.OK, updatedStudent);
 	}
 
 }

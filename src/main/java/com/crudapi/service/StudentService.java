@@ -12,7 +12,7 @@ public interface StudentService {
 
 	Student findByEmail(String email);
 
-	boolean deleteByEmail(String email);
+	void deleteByEmail(String email);
 
 	Student updateStudent(Student student, String email);
 
