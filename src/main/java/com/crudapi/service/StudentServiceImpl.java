@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.crudapi.dto.StudentDto;
 import com.crudapi.entity.Student;
 import com.crudapi.exception.ResourceNotFoundException;
 import com.crudapi.exception.StudentCreationException;
@@ -25,20 +26,12 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Student addStudent(Student student) {
-
-		if (student.getFirstName() == null || student.getFirstName().isEmpty()) {
-			throw new StudentCreationException("First name cannot be empty");
-		}
-		if (student.getLastName() == null || student.getLastName().isEmpty()) {
-			throw new StudentCreationException("Last name cannot be empty");
-		}
-		if (student.getEmail() == null || student.getEmail().isEmpty()) {
-			throw new StudentCreationException("Email cannot be empty");
-		}
-		if (student.getDateOfBirth() == null || student.getDateOfBirth().isAfter(LocalDate.now())) {
-			throw new StudentCreationException("Invalid Date Of Birth");
-		}
+	public Student addStudent(StudentDto studentDto) {
+		Student student = new Student();
+		student.setFirstName(studentDto.getFirstName());
+		student.setLastName(studentDto.getLastName());
+		student.setDateOfBirth(studentDto.getDateOfBirth());
+		student.setEmail(studentDto.getEmail());
 
 		return studentRepository.save(student);
 	}
@@ -73,17 +66,17 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Student updateStudent(Student student, String email) {
+	public Student updateStudent(StudentDto studentDto, String email) {
 
 		Optional<Student> existingStudent = studentRepository.findByEmail(email);
 		if (existingStudent.isEmpty()) {
 			throw new StudentNotFoundException("Requested student does not exists.");
 		}
 		Student updatedStudent = existingStudent.get();
-		updatedStudent.setFirstName(student.getFirstName());
-		updatedStudent.setLastName(student.getLastName());
-		updatedStudent.setDateOfBirth(student.getDateOfBirth());
-		updatedStudent.setEmail(student.getEmail());
+		updatedStudent.setFirstName(studentDto.getFirstName());
+		updatedStudent.setLastName(studentDto.getLastName());
+		updatedStudent.setDateOfBirth(studentDto.getDateOfBirth());
+		updatedStudent.setEmail(studentDto.getEmail());
 
 		Student savedStudent = studentRepository.save(updatedStudent);
 		return savedStudent;

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.crudapi.dto.StudentDto;
 import com.crudapi.entity.Student;
 import com.crudapi.response.ResponseHandler;
 import com.crudapi.service.StudentServiceImpl;
@@ -30,9 +31,9 @@ public class StudentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> addStudent(@Valid @RequestBody Student student) {
+	public ResponseEntity<Object> addStudent(@Valid @RequestBody StudentDto studentDto) {
 
-		Student savedStudent = studentServiceImpl.addStudent(student);
+		Student savedStudent = studentServiceImpl.addStudent(studentDto);
 		return ResponseHandler.responseBuilder("Student is added successfully", HttpStatus.CREATED, savedStudent);
 	}
 
@@ -56,8 +57,8 @@ public class StudentController {
 	}
 
 	@PutMapping("/{email}")
-	public ResponseEntity<Object> updateStudent(@Valid @RequestBody Student student, @PathVariable String email) {
-		Student updatedStudent = studentServiceImpl.updateStudent(student, email);
+	public ResponseEntity<Object> updateStudent(@Valid @RequestBody StudentDto studentDto, @PathVariable String email) {
+		Student updatedStudent = studentServiceImpl.updateStudent(studentDto, email);
 		return ResponseHandler.responseBuilder("Requested student is updated successfully", HttpStatus.OK, updatedStudent);
 	}
 
