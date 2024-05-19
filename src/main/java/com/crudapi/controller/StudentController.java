@@ -17,6 +17,8 @@ import com.crudapi.entity.Student;
 import com.crudapi.response.ResponseHandler;
 import com.crudapi.service.StudentServiceImpl;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/students")
 public class StudentController {
@@ -28,7 +30,7 @@ public class StudentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> addStudent(@RequestBody Student student) {
+	public ResponseEntity<Object> addStudent(@Valid @RequestBody Student student) {
 
 		Student savedStudent = studentServiceImpl.addStudent(student);
 		return ResponseHandler.responseBuilder("Student is added successfully", HttpStatus.CREATED, savedStudent);
@@ -54,7 +56,7 @@ public class StudentController {
 	}
 
 	@PutMapping("/{email}")
-	public ResponseEntity<Object> updateStudent(@RequestBody Student student, @PathVariable String email) {
+	public ResponseEntity<Object> updateStudent(@Valid @RequestBody Student student, @PathVariable String email) {
 		Student updatedStudent = studentServiceImpl.updateStudent(student, email);
 		return ResponseHandler.responseBuilder("Requested student is updated successfully", HttpStatus.OK, updatedStudent);
 	}
