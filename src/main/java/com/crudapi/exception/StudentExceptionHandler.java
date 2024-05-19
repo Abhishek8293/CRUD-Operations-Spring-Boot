@@ -23,14 +23,6 @@ public class StudentExceptionHandler {
 		return new ResponseEntity<>(studentException, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(value = { StudentCreationException.class })
-	public ResponseEntity<Object> handleStudentCreationException(StudentCreationException studentCreationException) {
-		StudentException studentException = new StudentException(studentCreationException.getMessage(),
-				studentCreationException.getCause(), HttpStatus.BAD_REQUEST);
-
-		return new ResponseEntity<>(studentException, HttpStatus.BAD_REQUEST);
-	}
-
 	@ExceptionHandler(value = { ResourceNotFoundException.class })
 	public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException) {
 

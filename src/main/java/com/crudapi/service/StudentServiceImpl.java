@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.crudapi.dto.StudentDto;
 import com.crudapi.entity.Student;
 import com.crudapi.exception.ResourceNotFoundException;
-import com.crudapi.exception.StudentCreationException;
 import com.crudapi.exception.StudentNotFoundException;
 import com.crudapi.repository.StudentRepository;
 import jakarta.transaction.Transactional;
