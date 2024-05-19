@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crudapi.entity.Student;
+import com.crudapi.response.ResponseHandler;
 import com.crudapi.service.StudentServiceImpl;
 
 @RestController
@@ -47,12 +48,12 @@ public class StudentController {
 	}
 
 	@GetMapping("/{email}")
-	public ResponseEntity<Student> getStudent(@PathVariable String email) {
+	public ResponseEntity<Object> getStudent(@PathVariable String email) {
 		Student student = this.studentServiceImpl.findByEmail(email);
 		if (student == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return ResponseHandler.responseBuilder("Student with given id is not present", HttpStatus.NOT_FOUND, null);
 		}
-		return new ResponseEntity<>(student, HttpStatus.OK);
+		return ResponseHandler.responseBuilder("Requested Student Details ", HttpStatus.OK, student);
 	}
 
 	@DeleteMapping("/{email}")

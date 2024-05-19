@@ -32,7 +32,12 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public Student findByEmail(String email) {
-		return this.studentRepository.findByEmail(email).get();
+		try {
+			return this.studentRepository.findByEmail(email).get();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
