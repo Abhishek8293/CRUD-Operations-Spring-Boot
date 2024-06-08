@@ -32,14 +32,12 @@ public class StudentController {
 
 	@PostMapping
 	public ResponseEntity<Object> addStudent(@Valid @RequestBody StudentDto studentDto) {
-
 		Student savedStudent = studentServiceImpl.addStudent(studentDto);
 		return ResponseHandler.responseBuilder("Student is added successfully", HttpStatus.CREATED, savedStudent);
 	}
 
 	@GetMapping
 	public ResponseEntity<Object> getAllStudents() {
-
 		List<Student> studentList = studentServiceImpl.findAll();
 		return ResponseHandler.responseBuilder("List of students", HttpStatus.OK, studentList);
 	}

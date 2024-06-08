@@ -19,16 +19,13 @@ public class StudentExceptionHandler {
 	public ResponseEntity<Object> handleStudentNotFoundException(StudentNotFoundException studentNotFoundException) {
 		StudentException studentException = new StudentException(studentNotFoundException.getMessage(),
 				studentNotFoundException.getCause(), HttpStatus.NOT_FOUND);
-
 		return new ResponseEntity<>(studentException, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(value = { ResourceNotFoundException.class })
 	public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException resourceNotFoundException) {
-
 		StudentException studentException = new StudentException(resourceNotFoundException.getMessage(),
 				resourceNotFoundException.getCause(), HttpStatus.NOT_FOUND);
-
 		return new ResponseEntity<>(studentException, HttpStatus.NOT_FOUND);
 	}
 
@@ -42,7 +39,6 @@ public class StudentExceptionHandler {
 			String messageString = error.getDefaultMessage();
 			responseMap.put(fieldName, messageString);
 		}
-
 		return new ResponseEntity<>(responseMap, HttpStatus.BAD_REQUEST);
 	}
 }

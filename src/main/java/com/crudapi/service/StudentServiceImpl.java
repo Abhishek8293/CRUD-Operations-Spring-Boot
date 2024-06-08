@@ -30,7 +30,6 @@ public class StudentServiceImpl implements StudentService {
 		student.setLastName(studentDto.getLastName());
 		student.setDateOfBirth(studentDto.getDateOfBirth());
 		student.setEmail(studentDto.getEmail());
-
 		return studentRepository.save(student);
 	}
 
@@ -45,40 +44,29 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public Student findByEmail(String email) {
-		Optional<Student> existingStudent = studentRepository.findByEmail(email);
-		if (existingStudent.isEmpty()) {
-			throw new StudentNotFoundException("Requested student does not exists.");
-		}
-
-		return existingStudent.get();
+		Student existingStudent = studentRepository.findByEmail(email)
+				.orElseThrow(() -> new StudentNotFoundException("Requested student does not exists."));
+		return existingStudent;
 	}
 
 	@Override
-	@Transactional
 	public void deleteByEmail(String email) {
-		Optional<Student> existingStudent = studentRepository.findByEmail(email);
-		if (existingStudent.isEmpty()) {
-			throw new StudentNotFoundException("Requested student does not exists.");
-		}
+		Student existingStudent = studentRepository.findByEmail(email)
+				.orElseThrow(() -> new StudentNotFoundException("Requested student does not exists."));
 		studentRepository.deleteByEmail(email);
 	}
 
 	@Override
 	public Student updateStudent(StudentDto studentDto, String email) {
 
-		Optional<Student> existingStudent = studentRepository.findByEmail(email);
-		if (existingStudent.isEmpty()) {
-			throw new StudentNotFoundException("Requested student does not exists.");
-		}
-		Student updatedStudent = existingStudent.get();
-		updatedStudent.setFirstName(studentDto.getFirstName());
-		updatedStudent.setLastName(studentDto.getLastName());
-		updatedStudent.setDateOfBirth(studentDto.getDateOfBirth());
-		updatedStudent.setEmail(studentDto.getEmail());
-
-		Student savedStudent = studentRepository.save(updatedStudent);
+		Student existingStudent = studentRepository.findByEmail(email)
+				.orElseThrow(() -> new StudentNotFoundException("Requested student does not exists."));
+		existingStudent.setFirstName(studentDto.getFirstName());
+		existingStudent.setLastName(studentDto.getLastName());
+		existingStudent.setDateOfBirth(studentDto.getDateOfBirth());
+		existingStudent.setEmail(studentDto.getEmail());
+		Student savedStudent = studentRepository.save(existingStudent);
 		return savedStudent;
-
 	}
 
 }
